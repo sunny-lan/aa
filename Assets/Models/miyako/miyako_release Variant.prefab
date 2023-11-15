@@ -1797,13 +1797,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1.8
+  m_Radius: 0.4
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &5671894397398219153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1816,10 +1816,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc87d73747f0f564480403e1257c164c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 360
+  rotationSpeed: 100
   jumpSpeed: 5
   jumpButtonGracePeriod: 0.5
   cameraTransform: {fileID: 0}
+  maxSpeed: 3.78
+  accel: 1.5
 --- !u!4 &3505911281523739314 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 898073528734774936, guid: b4ea691740920764fb842e3146dfb475, type: 3}

@@ -23,6 +23,8 @@ public class PlayerMove : MonoBehaviour
     private float? lastGroundedTime;
     private float? jumpButtonPressedTime;
 
+    public float maxSpeed = 3.78f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,20 +39,20 @@ public class PlayerMove : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        animator.SetFloat("X", horizontalInput, 0.05f, Time.deltaTime);
-        animator.SetFloat("Y", verticalInput, 0.05f, Time.deltaTime);
 
-        Vector3 movementDirection = new Vector3(horizontalInput, 0, verticalInput);
-        float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
+        Vector3 baseMovementDirection = new Vector3(horizontalInput, 0, verticalInput);
+        baseMovementDirection.Normalize();
 
+        float inputMagnitude = Mathf.Clamp01(baseMovementDirection.magnitude);
         if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
         {
             inputMagnitude /= 2;
         }
 
-        animator.SetFloat("Input Magnitude", inputMagnitude, 0.05f, Time.deltaTime);
+        animator.SetFloat("Input Magnitude", inputMagnitude);
 
-        movementDirection = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up) * movementDirection;
+        var camDir = Quaternion.AngleAxis(cameraTransform.rotation.eulerAngles.y, Vector3.up);
+        var movementDirection = camDir * baseMovementDirection;
         movementDirection.Normalize();
 
         ySpeed += Physics.gravity.y * Time.deltaTime;
@@ -82,12 +84,15 @@ public class PlayerMove : MonoBehaviour
             characterController.stepOffset = 0;
         }
 
+
+        animator.SetFloat("X", baseMovementDirection.x * maxSpeed * inputMagnitude);
+        animator.SetFloat("Y", baseMovementDirection.z * maxSpeed * inputMagnitude);
+
         if (movementDirection != Vector3.zero)
         {
             animator.SetBool("IsMoving", true);
 
-            Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-
+            Quaternion toRotation = camDir;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
         else
