@@ -37,6 +37,9 @@ public class PlayerMove : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
+        animator.SetFloat("X", horizontalInput, 0.05f, Time.deltaTime);
+        animator.SetFloat("Y", verticalInput, 0.05f, Time.deltaTime);
+
         Vector3 movementDirection = new Vector3(horizontalInput, 0, verticalInput);
         float inputMagnitude = Mathf.Clamp01(movementDirection.magnitude);
 
